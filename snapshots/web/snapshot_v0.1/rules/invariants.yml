@@ -1,0 +1,31 @@
+rules:
+  - id: WEB-INVARIANT-001
+    title: "No disabling TLS verification in HTTP clients"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.js"
+        - "**/*.ts"
+        - "**/*.py"
+        - "**/*.php"
+      required_absent:
+        - "rejectUnauthorized: false"
+        - "verify=False"
+        - "CURLOPT_SSL_VERIFYPEER, false"
+
+  - id: WEB-INVARIANT-002
+    title: "No debug mode flags committed for production configs"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.env"
+        - "**/*.env.*"
+        - "**/*.yml"
+        - "**/*.yaml"
+        - "**/*.json"
+      required_absent:
+        - "DEBUG=true"
+        - "\"debug\": true"
+
