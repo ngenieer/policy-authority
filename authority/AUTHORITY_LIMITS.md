@@ -41,6 +41,21 @@ The Authority Company MAY NOT:
 
 ---
 
+## 3.1 Explicitly Refused Domains
+
+The Authority Company explicitly refuses to exercise authority over
+domains whose policy meaning depends on runtime interaction or
+request-time semantics.
+
+This includes, but is not limited to:
+
+- Web-facing infrastructure (routing, headers, CDN, edge, request-level configuration)
+
+This refusal is **by design, not by omission**.
+No Authority Frame or Policy Snapshot may claim coverage over these domains.
+
+---
+
 ## 4. Immutability and Public Record
 
 All Authority Frame versions:
