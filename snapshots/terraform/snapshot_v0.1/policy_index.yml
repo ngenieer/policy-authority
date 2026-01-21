@@ -1,0 +1,11 @@
+snapshot_id: terraform/snapshot_v0.1
+domain: terraform
+version: v0.1
+frame: frames/terraform/SNAPSHOT_FRAME.md
+issuer: Authority Company (initial infrastructure snapshot)
+rules:
+  boundaries: rules/boundaries.yml
+  invariants: rules/invariants.yml
+  deprecated: rules/deprecated.yml
+sources:
+  - sources/README.md

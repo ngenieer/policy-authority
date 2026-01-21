@@ -1,0 +1,23 @@
+rules:
+  - id: K8S-BOUNDARY-001
+    title: "No privileged pods"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - "privileged: true"
+
+  - id: K8S-BOUNDARY-002
+    title: "No public wildcard ingress rules"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - "0.0.0.0/0"
+        - "::/0"

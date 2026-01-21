@@ -1,0 +1,11 @@
+snapshot_id: kubernetes/snapshot_v0.1
+domain: kubernetes
+version: v0.1
+frame: frames/kubernetes/SNAPSHOT_FRAME.md
+issuer: Authority Company (initial infrastructure snapshot)
+rules:
+  boundaries: rules/boundaries.yml
+  invariants: rules/invariants.yml
+  deprecated: rules/deprecated.yml
+sources:
+  - sources/README.md

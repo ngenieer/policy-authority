@@ -1,0 +1,26 @@
+rules:
+  - id: TF-BOUNDARY-001
+    title: "No public wildcard ingress or cidr exposure"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.tf"
+        - "**/*.tfvars"
+        - "**/*.auto.tfvars"
+      forbidden_patterns:
+        - "0.0.0.0/0"
+        - "::/0"
+
+  - id: TF-BOUNDARY-002
+    title: "No wildcard IAM actions"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.tf"
+        - "**/*.tfvars"
+        - "**/*.auto.tfvars"
+      forbidden_patterns:
+        - "\"Action\": \"*\""
+        - "action = \"*\""

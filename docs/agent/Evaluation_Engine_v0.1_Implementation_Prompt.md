@@ -24,10 +24,10 @@ This is a contractual implementation task.
 Before writing any code, you MUST read and obey the following documents in full:
 
 1. `README.md`
-2. `PRODUCT_DEFINITION_v0.1.md`
-3. `INFRASTRUCTURE_REQUIREMENTS_v0.1.md`
-4. `EVALUATION_ENGINE_CHECKLIST_v0.1.md`
-5. `AGENT_IMPLEMENTATION_CONTRACT.md` (if present)
+2. `Product_Definition_v0.1.md`
+3. `Infrastructure_Requirements_v0.1.md`
+4. `docs/audit/Evaluation_Engine_Checklist_v0.1.md`
+5. `docs/agent/Agent_Implementation_Contract.md` (if present)
 
 If any conflict exists between documents, higher-layer documents take precedence.
 
@@ -105,7 +105,7 @@ Ordering MUST be deterministic.
 
 The implementation is acceptable ONLY if:
 
-1. All items in `EVALUATION_ENGINE_CHECKLIST_v0.1.md` are satisfied
+1. All items in `docs/audit/Evaluation_Engine_Checklist_v0.1.md` are satisfied
 2. Terraform example policies produce at least one FAIL with evidence
 3. Kubernetes example policies produce at least one FAIL with evidence
 4. Two consecutive runs produce byte-identical `verdict.json`
@@ -125,4 +125,3 @@ If your implementation introduces flexibility, inference, or convenience:
 Implement the checklist.
 Nothing more.
 Nothing less.
-

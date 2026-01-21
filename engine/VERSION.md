@@ -68,7 +68,8 @@ At minimum:
 ### 4.2 Exit Codes
 
 - Exit code `0`: PASS (no violations)
-- Non-zero exit code: FAIL (one or more violations)
+- Exit code `1`: FAIL (policy violation detected)
+- Exit code `>1`: execution error
 
 ---
 
@@ -122,4 +123,3 @@ Its purpose is not to be correct or intelligent, but to be:
 - auditable
 
 Any behavior outside this declaration is non-authoritative by definition.
-

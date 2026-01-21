@@ -1,0 +1,23 @@
+rules:
+  - id: K8S-INVARIANT-001
+    title: "Containers must not run as root"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      required_absent:
+        - "runAsUser: 0"
+        - "runAsNonRoot: false"
+
+  - id: K8S-INVARIANT-002
+    title: "Image pull policy must not be Never"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      required_absent:
+        - "imagePullPolicy: Never"

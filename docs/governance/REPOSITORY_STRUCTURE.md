@@ -151,8 +151,6 @@ Defines **what constitutes a Snapshot in each domain**.
 
 ```
 frames/
-├── web/
-│   └── SNAPSHOT_FRAME.md
 ├── terraform/
 │   └── SNAPSHOT_FRAME.md
 └── kubernetes/
@@ -176,18 +174,24 @@ Contains **actual policy snapshots** issued under a Snapshot Frame.
 
 ```
 snapshots/
-├── web/
-│   └── snapshot_v0.1/
-│       ├── rules/
-│       │   ├── boundaries.yml
-│       │   └── invariants.yml
-│       └── SNAPSHOT_META.md
-│
 ├── terraform/
 │   └── snapshot_v0.1/
-│
+│       ├── policy_index.yml
+│       ├── rules/
+│       │   ├── boundaries.yml
+│       │   ├── invariants.yml
+│       │   └── deprecated.yml
+│       ├── sources/
+│       └── SNAPSHOT_META.md
 └── kubernetes/
     └── snapshot_v0.1/
+        ├── policy_index.yml
+        ├── rules/
+        │   ├── boundaries.yml
+        │   ├── invariants.yml
+        │   └── deprecated.yml
+        ├── sources/
+        └── SNAPSHOT_META.md
 ```
 
 **Rules**
@@ -249,4 +253,3 @@ This repository structure is part of the system's authority model.
 
 Changing structure without explicit declaration
 is equivalent to changing authority semantics.
-

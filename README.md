@@ -17,8 +17,8 @@ It executes decisions that were deliberately fixed **before execution**, and pre
 
 The **intent and scope of v0.1** are formally specified in the following normative documents:
 
-- `PRODUCT_DEFINITION_v0.1.md`
-- `INFRASTRUCTURE_REQUIREMENTS_v0.1.md`
+- `Product_Definition_v0.1.md`
+- `Infrastructure_Requirements_v0.1.md`
 
 All implementations, agents, and tools **MUST conform** to these documents.
 
@@ -69,7 +69,7 @@ For v0.1, the engine:
 - Produces PASS or FAIL verdicts only
 
 The binding implementation requirements are defined in:
-- `EVALUATION_ENGINE_CHECKLIST_v0.1.md`
+- `docs/audit/Evaluation_Engine_Checklist_v0.1.md`
 
 ---
 
@@ -96,12 +96,12 @@ Policy Authority documentation is layered intentionally.
 - `CONTRIBUTING.md` — Contribution constraints and rejection criteria
 
 ### Product Definition Layer (v0.1)
-- `PRODUCT_DEFINITION_v0.1.md` — What this product is and is not
-- `INFRASTRUCTURE_REQUIREMENTS_v0.1.md` — Fixed scope and system requirements
+- `Product_Definition_v0.1.md` — What this product is and is not
+- `Infrastructure_Requirements_v0.1.md` — Fixed scope and system requirements
 
 ### Execution Contract Layer
-- `EVALUATION_ENGINE_CHECKLIST_v0.1.md` — Binding implementation checklist
-- `AGENT_IMPLEMENTATION_CONTRACT.md` — Agent execution constraints
+- `docs/audit/Evaluation_Engine_Checklist_v0.1.md` — Binding implementation checklist
+- `docs/agent/Agent_Implementation_Contract.md` — Agent execution constraints
 
 Lower layers MUST NOT contradict upper layers.
 
@@ -127,4 +127,3 @@ This project is licensed under the Apache 2.0 License.
 ---
 
 > **If an implementation conflicts with the Product Definition or Infrastructure Requirements, the implementation is wrong.**
-
