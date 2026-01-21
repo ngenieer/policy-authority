@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+# Policy Authority v0.1 CLI (eval only).
+
+import argparse
+import fnmatch
+import hashlib
+import json
+import os
+import sys
+from pathlib import Path
+
+
+def fail(msg: str, code: int = 2) -> "NoReturn":  # type: ignore[override]
+    sys.stderr.write(f"error: {msg}\n")
+    sys.exit(code)
+
+
+def load_yaml(path: Path):
+    try:
+        import yaml  # type: ignore
+    except ImportError:  # pragma: no cover
+        fail("PyYAML is required to run eval")
+    try:
+        with path.open("r", encoding="utf-8") as fh:
+            return yaml.safe_load(fh)
+    except Exception as exc:  # pragma: no cover
+        fail(f"failed to parse YAML {path}: {exc}")
+
+
+def compute_snapshot_hash(snapshot_path: Path) -> str:
+    h = hashlib.sha256()
+    files = sorted(p for p in snapshot_path.rglob("*") if p.is_file())
+    for p in files:
+        rel = p.relative_to(snapshot_path).as_posix().encode("utf-8")
+        data = p.read_bytes()
+        h.update(rel)
+        h.update(b"\0")
+        h.update(data)
+    return f"sha256:{h.hexdigest()}"
+
+
+def gather_rules(snapshot_path: Path):
+    boundaries = snapshot_path / "rules" / "boundaries.yml"
+    invariants = snapshot_path / "rules" / "invariants.yml"
+    deprecated = snapshot_path / "rules" / "deprecated.yml"
+    for f in (boundaries, invariants, deprecated):
+        if not f.is_file():
+            fail(f"missing required rule file: {f}")
+    b_data = load_yaml(boundaries) or {}
+    i_data = load_yaml(invariants) or {}
+    b_rules = b_data.get("rules") or b_data.get("boundaries") or []
+    i_rules = i_data.get("rules") or i_data.get("invariants") or []
+    return b_rules, i_rules
+
+
+def list_files(target: Path):
+    return sorted([p for p in target.rglob("*") if p.is_file()])
+
+
+def evaluate(snapshot_path: Path, target_path: Path):
+    policy_index = snapshot_path / "policy_index.yml"
+    if not policy_index.is_file():
+        fail(f"missing policy_index.yml in {snapshot_path}")
+    index = load_yaml(policy_index)
+    snapshot_id = index.get("snapshot_id") or index.get("id") or "unknown"
+    snapshot_hash = compute_snapshot_hash(snapshot_path)
+    b_rules, i_rules = gather_rules(snapshot_path)
+    order = index.get("evaluation", {}).get("order") or ["boundaries", "invariants"]
+
+    violations = []
+    files = list_files(target_path)
+
+    def match_files(globs, path: Path):
+        s = path.as_posix()
+        for g in globs:
+            if path.match(g) or fnmatch.fnmatch(s, g):
+                return True
+            if g.startswith("**/"):
+                trimmed = g[3:]
+                if path.match(trimmed) or fnmatch.fnmatch(s, trimmed):
+                    return True
+        return False
+
+    rule_sets = {"boundaries": b_rules, "invariants": i_rules}
+
+    for rule_type in order:
+        rules = rule_sets.get(rule_type, [])
+        if rule_type == "boundaries":
+            for rule in rules:
+                globs = rule.get("match", {}).get("files", [])
+                match_block = rule.get("match", {})
+                patterns = match_block.get("forbidden_patterns") or match_block.get("contains") or []
+                for f in files:
+                    if not match_files(globs, f.relative_to(target_path)):
+                        continue
+                    try:
+                        content = f.read_text(encoding="utf-8", errors="replace")
+                    except Exception:
+                        content = ""
+                    for pat in patterns:
+                        if pat in content:
+                            violations.append(
+                                {
+                                    "rule": rule.get("id", "unknown"),
+                                    "file": f.relative_to(target_path).as_posix(),
+                                    "evidence": pat,
+                                }
+                            )
+                            return "FAIL", snapshot_id, snapshot_hash, violations
+        elif rule_type == "invariants":
+            for rule in rules:
+                globs = rule.get("match", {}).get("files", [])
+                match_block = rule.get("match", {})
+                patterns = match_block.get("required_absent") or match_block.get("contains") or []
+                for f in files:
+                    if not match_files(globs, f.relative_to(target_path)):
+                        continue
+                    try:
+                        content = f.read_text(encoding="utf-8", errors="replace")
+                    except Exception:
+                        content = ""
+                    for pat in patterns:
+                        if pat in content:
+                            violations.append(
+                                {
+                                    "rule": rule.get("id", "unknown"),
+                                    "file": f.relative_to(target_path).as_posix(),
+                                    "evidence": pat,
+                                }
+                            )
+                            return "FAIL", snapshot_id, snapshot_hash, violations
+
+    return "PASS", snapshot_id, snapshot_hash, violations
+
+
+def write_verdict(out_path: Path, verdict_obj):
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    data = json.dumps(verdict_obj, sort_keys=True, separators=(",", ":"))
+    out_path.write_text(data, encoding="utf-8")
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="policy-authority", add_help=False)
+    parser.add_argument("command", choices=["eval"])
+    parser.add_argument("--snapshot", required=True)
+    parser.add_argument("--target", required=True)
+    parser.add_argument("--out", default="verdict.json")
+    args = parser.parse_args()
+
+    snapshot_path = Path(args.snapshot).resolve()
+    target_path = Path(args.target).resolve()
+    out_path = Path(args.out).resolve()
+
+    if not snapshot_path.is_dir():
+        fail(f"snapshot path not found: {snapshot_path}")
+    if not target_path.is_dir():
+        fail(f"target path not found: {target_path}")
+
+    verdict, snapshot_id, snapshot_hash, violations = evaluate(snapshot_path, target_path)
+
+    verdict_obj = {
+        "verdict": verdict,
+        "snapshot": {"id": snapshot_id, "hash": snapshot_hash},
+        "target": {"path": str(target_path), "ref": "local"},
+        "violations": violations,
+    }
+
+    write_verdict(out_path, verdict_obj)
+    if verdict == "PASS":
+        sys.exit(0)
+    else:
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

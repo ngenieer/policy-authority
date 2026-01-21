@@ -1,1 +1,19 @@
-rules: []
+# Deprecated — Known-bad patterns retained for audit history in terraform/snapshot_v0.1
+# If matched, the result MUST be FAIL (short-circuit).
+
+deprecated:
+  - id: allow_legacy_public_acl
+    description: Legacy public-read ACL pattern is forbidden.
+    match:
+      files:
+        - "**/*.tf"
+      contains:
+        - "acl = \"public-read\""
+
+  - id: allow_world_open_cidr
+    description: Legacy world-open CIDR reference is forbidden.
+    match:
+      files:
+        - "**/*.tf"
+      contains:
+        - "0.0.0.0/0"

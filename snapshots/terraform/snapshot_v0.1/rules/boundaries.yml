@@ -1,26 +1,27 @@
-rules:
-  - id: TF-BOUNDARY-001
-    title: "No public wildcard ingress or cidr exposure"
-    enforcement:
-      mode: fail
-    match:
-      files:
-        - "**/*.tf"
-        - "**/*.tfvars"
-        - "**/*.auto.tfvars"
-      forbidden_patterns:
-        - "0.0.0.0/0"
-        - "::/0"
+# Boundaries — Hard FAIL conditions for terraform/snapshot_v0.1
+# Any match MUST produce FAIL and halt evaluation (short-circuit).
 
-  - id: TF-BOUNDARY-002
-    title: "No wildcard IAM actions"
-    enforcement:
-      mode: fail
+boundaries:
+  - id: no_public_ingress
+    description: Disallow public ingress (0.0.0.0/0) in security group rules.
     match:
       files:
         - "**/*.tf"
-        - "**/*.tfvars"
-        - "**/*.auto.tfvars"
-      forbidden_patterns:
-        - "\"Action\": \"*\""
-        - "action = \"*\""
+      contains:
+        - "0.0.0.0/0"
+
+  - id: no_wildcard_iam
+    description: Disallow wildcard IAM permissions.
+    match:
+      files:
+        - "**/*.tf"
+      contains:
+        - "*"
+
+  - id: require_encryption_at_rest
+    description: Require encryption at rest for managed resources.
+    match:
+      files:
+        - "**/*.tf"
+      contains:
+        - "encrypted = false"

@@ -107,6 +107,11 @@ Lower layers MUST NOT contradict upper layers.
 
 ---
 
+### Dependency
+PyYAML (see requirements.txt)
+
+---
+
 ## Status
 
 The principles, scope, and constraints of v0.1 are fixed.

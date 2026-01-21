@@ -1,5 +1,8 @@
 # Snapshot Metadata: kubernetes/snapshot_v0.1
 
+> Status: Non-executable placeholder.
+> This snapshot is not part of v0.1 Level 2 execution proof.
+
 ## Identity
 
 - snapshot_id: kubernetes/snapshot_v0.1

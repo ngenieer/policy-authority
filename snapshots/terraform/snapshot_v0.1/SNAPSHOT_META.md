@@ -16,9 +16,41 @@
 ## Enforcement
 
 - mode: FAIL_ONLY
-- rule_order:
-  1) rules/boundaries.yml
-  2) rules/invariants.yml
+- evaluation_order: defined by `policy_index.yml` (`evaluation.order`)
+- short_circuit: true (first violation halts evaluation)
+
+## Snapshot Hash (Deterministic Identity)
+
+The snapshot hash MUST be computed deterministically as follows:
+
+1) **Included files** (and only these):
+   - `policy_index.yml`
+   - all files under `rules/` with extension `.yml` (e.g., `rules/boundaries.yml`, `rules/invariants.yml`, `rules/deprecated.yml`)
+
+2) **Path ordering**: sort included file paths lexicographically (byte order).
+
+3) **Content normalization** for each file before hashing:
+   - interpret as UTF-8 bytes
+   - normalize newlines to LF (`\n`)
+   - do not trim whitespace
+
+4) **Concatenation format** (repeat for each sorted path):
+
+```
+<relative_path>\n<file_bytes>\n
+```
+
+5) Compute `sha256` over the final concatenated byte stream.
+
+Any change to this algorithm requires a version bump.
+
+## Deprecated Rules Semantics
+
+Deprecated rules are retained for **historical and audit continuity only**.
+
+- Deprecated rules MAY overlap with boundaries or invariants.
+- When overlap occurs, **evaluation order in `policy_index.yml` determines which rule records the violation evidence**.
+- Deprecated rules do not introduce new enforcement semantics beyond FAIL-only behavior.
 
 ## Scope Note
 

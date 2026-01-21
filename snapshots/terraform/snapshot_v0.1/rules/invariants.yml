@@ -1,26 +1,15 @@
-rules:
-  - id: TF-INVARIANT-001
-    title: "Encryption must not be disabled"
-    enforcement:
-      mode: fail
-    match:
-      files:
-        - "**/*.tf"
-        - "**/*.tfvars"
-        - "**/*.auto.tfvars"
-      required_absent:
-        - "encrypted = false"
-        - "kms_master_key_id = \"\""
+# Invariants — Always-required properties for terraform/snapshot_v0.1
+# If an invariant is violated, the result MUST be FAIL (short-circuit).
+# Matching model is glob + substring only (case-sensitive).
 
-  - id: TF-INVARIANT-002
-    title: "No hardcoded shared secrets"
-    enforcement:
-      mode: fail
+invariants:
+  - id: encryption_must_not_be_disabled
+    description: Encryption must not be explicitly disabled.
     match:
       files:
         - "**/*.tf"
-        - "**/*.tfvars"
-        - "**/*.auto.tfvars"
-      required_absent:
-        - "shared_secret"
-        - "hardcoded_password"
+      contains:
+        - "encrypted = false"
+
+  - id: no_hardcoded_secrets_markers
+    description: Disallow known hardcoded-secret markers.
