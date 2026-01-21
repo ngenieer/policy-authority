@@ -1,7 +1,9 @@
 # Snapshot Metadata: kubernetes/snapshot_v0.1
 
 > Status: Non-executable placeholder.
-> This snapshot is not part of v0.1 Level 2 execution proof.
+> Reason: Kubernetes domain requires different base rules than v0.1 (Terraform) glob+substring model.
+> Not part of v0.1 Level 2 execution proof.
+
 
 ## Identity
 

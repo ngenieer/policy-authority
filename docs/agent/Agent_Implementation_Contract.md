@@ -1,191 +1,80 @@
-# Agent Implementation Contract v0.1
+# Agent Implementation Contract (v0.1)
 
-> This document defines **non-negotiable implementation instructions** for any AI Agent tasked with building the AI Decision Audit & Enforcement System.
->
-> This is not guidance. This is a contract.
+> Status: Completed.
+> This document is binding for v0.1 Level 2 Terraform proof only.
 
----
+## 1. Purpose
 
-## 0. Authority of This Document
+This contract defines the **strict implementation boundaries** for an Agent participating in **Policy Authority v0.1**.
+The Agent acts solely as an implementer and **MUST NOT introduce new semantics, abstractions, or future-facing features**.
 
-This contract is **subordinate only to**:
-- Product_Definition_v0.1 (EN/KR)
-- Infrastructure_Requirements_v0.1 (EN/KR)
+## 2. Authority Hierarchy (v0.1)
 
-If any ambiguity exists, **this contract SHALL be interpreted conservatively** in favor of:
-- determinism
-- auditability
-- immutability
+The Agent MUST follow the authority order below. Higher layers override lower layers.
 
----
+1. `frames/terraform/SNAPSHOT_FRAME.md`
+2. `snapshots/*/SNAPSHOT_META.md`
+3. `snapshots/*/policy_index.yml`
+4. This contract
+5. `Agent_Evaluation_Algorithm_Addendum_v0.1.md`
 
-## 1. Role of the AI Agent
+Any conflict MUST be resolved in favor of the higher-ranked document.
 
-The AI Agent SHALL act as:
-- an **implementer**, not a designer
-- an **executor of fixed decisions**, not a decision-maker
+## 3. Scope of Work
 
-The Agent SHALL NOT:
-- reinterpret product intent
-- expand scope
-- introduce convenience features
-
----
-
-## 2. Implementation Scope (v0.1)
-
-The Agent SHALL implement **only**:
-
-- Standalone CLI program
-- Infrastructure-only auditing
-- Git-based Policy Snapshot loading
-- Deterministic PASS / FAIL enforcement
-- Verdict artifact generation
-
-Any feature outside this list is **explicitly forbidden**.
-
----
-
-## 3. Mandatory Architectural Constraints
-
-### 3.1 Offline Determinism
-
-- All enforcement decisions MUST be executable offline
-- Network access during `audit run` is forbidden
-- Policy Snapshots MUST be pre-fetched or locally available
-
----
-
-### 3.2 Policy Snapshot Immutability
-
-- Policy Snapshots SHALL be treated as read-only
-- No runtime modification is permitted
-- Policy identity SHALL be bound to:
-  - policy repository URL
-  - commit SHA
-  - computed bundle hash
-
----
-
-### 3.3 No "Latest" Semantics
-
-- The Agent SHALL NOT implement:
-  - "latest" policy resolution
-  - implicit policy upgrades
-
-All policy usage MUST reference an explicit commit SHA.
-
----
-
-## 4. CLI Contract
-
-### 4.1 Required Commands
-
-The CLI MUST implement:
-
-- `audit sync`
-  - Fetch policy repository
-  - Checkout exact commit SHA
-  - Cache snapshot locally
-
-- `audit run`
-  - Execute audit using cached snapshot
-  - Produce verdict artifact
-
-Optional:
-- `audit verify`
-  - Verify policy snapshot signature (if present)
-
----
-
-### 4.2 CLI Exit Codes
-
-- `0` → PASS
-- `1` → FAIL (policy violation)
-- `>1` → Execution error
-
-Exit codes MUST be stable.
-
----
-
-## 5. Enforcement Semantics
-
-### 5.1 PASS / FAIL Rules
-
-- PASS is permitted **only if no enforced rule is violated**
-- Any enforced rule violation MUST result in FAIL
-
-Partial PASS or warnings SHALL NOT exist in v0.1.
-
----
-
-### 5.2 Evidence Binding
-
-Every FAIL MUST include:
-- rule identifier
-- file or resource identifier
-- reason
-- evidence reference
-
-Human-readable explanations are optional.
-
----
-
-## 6. Verdict Artifact Contract
-
-A verdict artifact MUST be produced on every execution.
-
-Minimum required fields:
-
-- verdict
-- policy_repo
-- policy_ref
-- policy_bundle_hash
-- target_repo_commit
-- violations[]
-
-Artifacts SHALL be written to disk.
-
----
-
-## 7. Forbidden Behaviors (Critical)
+The Agent MAY:
+- Implement deterministic evaluation logic for **static Terraform files**
+- Read snapshot rules and evaluation order from snapshot documents
+- Produce PASS/FAIL verdicts with deterministic evidence
 
 The Agent MUST NOT:
+- Perform semantic parsing (AST, resource graphs, execution)
+- Introduce remote access, sync, fetch, or verification steps
+- Add CI/CD integration or background services
+- Infer meaning beyond explicit substring matching
 
-- auto-fix or remediate changes
-- suggest improvements
-- request human approval
-- persist state outside designated output directories
-- introduce UI, dashboards, or services
+## 4. Execution Model
 
----
+- Execution is **offline only**
+- Evaluation is **deterministic**
+- Evaluation input is limited to:
+  - snapshot directory
+  - target repository directory
 
-## 8. Implementation Philosophy
+No implicit discovery, defaults, or environment-based behavior is allowed.
 
-The correct implementation is:
-- boring
-- explicit
-- repeatable
+## 5. CLI Contract (v0.1)
 
-If a feature feels "helpful", it is probably **out of scope**.
+Only the following command is valid in v0.1:
 
----
+```text
+policy-authority eval --snapshot <path> --target <path> [--out <path>]
+```
 
-## 9. Completion Criteria
+Any other subcommands or flags are **out of scope**.
 
-Implementation is considered complete only if:
+## 6. Verdict Contract
 
-- Given identical inputs, identical outputs are produced
-- Verdicts can be reproduced months later using stored artifacts
-- No hidden state or implicit behavior exists
+- Output MUST be a single `verdict.json`
+- Verdict MUST be either `PASS` or `FAIL`
+- Verdict MUST include:
+  - snapshot_id
+  - snapshot_hash (as defined in SNAPSHOT_META.md)
+  - target_ref (path)
+  - violations[] (empty if PASS)
 
----
+## 7. Determinism Requirements
 
-## 10. Final Clause
+- File traversal MUST be sorted
+- Rule evaluation order MUST follow `policy_index.yml`
+- Snapshot hash MUST follow the algorithm defined in `SNAPSHOT_META.md`
 
-If a design decision is unclear:
+If any required input is missing or ambiguous, the Agent MUST FAIL explicitly.
 
-> **Do nothing rather than guess.**
+## 8. Completion Criteria
 
-Ambiguity SHALL result in a failed build, not creative interpretation.
+Implementation is considered complete when:
+- PASS and FAIL examples both execute successfully
+- Repeated execution produces byte-identical verdicts
+- No behavior exceeds the scope defined above
 

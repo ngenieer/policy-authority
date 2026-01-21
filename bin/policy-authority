@@ -28,14 +28,19 @@ def load_yaml(path: Path):
 
 
 def compute_snapshot_hash(snapshot_path: Path) -> str:
+    include = [
+        snapshot_path / "policy_index.yml",
+        *sorted((snapshot_path / "rules").glob("*.yml")),
+    ]
     h = hashlib.sha256()
-    files = sorted(p for p in snapshot_path.rglob("*") if p.is_file())
-    for p in files:
+    for p in sorted(include, key=lambda x: x.relative_to(snapshot_path).as_posix()):
         rel = p.relative_to(snapshot_path).as_posix().encode("utf-8")
-        data = p.read_bytes()
+        text = p.read_text(encoding="utf-8", errors="replace")
+        normalized = text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
         h.update(rel)
-        h.update(b"\0")
-        h.update(data)
+        h.update(b"\n")
+        h.update(normalized)
+        h.update(b"\n")
     return f"sha256:{h.hexdigest()}"
 
 

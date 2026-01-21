@@ -13,3 +13,9 @@ invariants:
 
   - id: no_hardcoded_secrets_markers
     description: Disallow known hardcoded-secret markers.
+    match:
+      files:
+        - "**/*.tf"
+      contains:
+        - "hardcoded_password"
+        - "shared_secret"

@@ -1,3 +1,5 @@
+status: non_executable_placeholder
+reason: different_base_rules_than_v0.1_terraform_model
 snapshot_id: kubernetes/snapshot_v0.1
 domain: kubernetes
 version: v0.1
