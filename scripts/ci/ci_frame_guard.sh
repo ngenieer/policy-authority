@@ -46,3 +46,23 @@ while IFS=$'\t' read -r status path; do
       ;;
   esac
 done < <(read_diff)
+
+# Rule 3: authority paths require explicit acknowledgment marker in commit message
+authority_change=0
+while IFS=$'\t' read -r status path; do
+  [ -z "${path:-}" ] && continue
+  case "$path" in
+    authority/*)
+      authority_change=1
+      ;;
+    *)
+      ;;
+  esac
+done < <(read_diff)
+
+if [ "$authority_change" -eq 1 ]; then
+  msg=$(git log -1 --pretty=%B)
+  if [[ "$msg" != *"AUTHORITY_CHANGE_ACK"* ]]; then
+    fail "authority path changed without AUTHORITY_CHANGE_ACK in commit message"
+  fi
+fi
