@@ -1,0 +1,15 @@
+# authority/SEALED_FILES.yml
+# Files that MUST NOT change under the same Authority instance.
+
+sealed_files:
+  # Constitutional boundary
+  - authority/AUTHORITY_LIMITS.md
+  - authority/OVERRIDE_BOUNDARIES.md
+
+  # Engine meaning freeze (critical)
+  - engine/VERSION.md
+
+  # Optional: if you commit the canvas docs into repo
+  # - authority/authority_core_language_freeze_v1.md
+  # - authority/frame_interpretation_contract_v1.md
+  # - authority/authority_forbidden_elements_v1.md
