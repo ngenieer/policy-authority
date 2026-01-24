@@ -125,6 +125,42 @@ The following documents are considered **stable and binding**:
 
 ---
 
+## CI Guard
+
+Policy Authority enforces its constitutional constraints through a single, unified **CI Guard**.
+
+The CI Guard is a mandatory gate executed in CI and is not an optional developer tool.
+It acts as the sole constitutional enforcer of this repository.
+
+The CI Guard enforces:
+
+- **Engine Freeze**
+  - The semantic meaning of the Engine is frozen.
+  - `engine/ENGINE_FREEZE.md` must exist.
+  - Frozen engine surfaces (e.g. `engine/verdict.schema.json`) must not change.
+
+- **Frame Integrity**
+  - Every frame must contain `FRAME_CONSTITUTION.md`.
+  - Frames are immutable after admission (only new frames may be added).
+
+- **Authority Governance**
+  - Changes under `authority/` require explicit acknowledgment in commit messages.
+  - Sealed Authority files must never change in-place.
+  - Sealed hashes are verified to detect silent tampering.
+
+- **Boundary Enforcement**
+  - The Engine must not depend on `frames/`, `snapshots/`, or `authority/`.
+
+
+All constitutional enforcement is centralized in: 
+
+scripts/ci/ci_guard.sh
+
+No other CI guard scripts are authoritive.
+
+
+---
+
 ## License
 
 This project is licensed under the Apache 2.0 License.
