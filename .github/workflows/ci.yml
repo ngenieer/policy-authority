@@ -1,0 +1,27 @@
+name: CI Guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "post-proof/**"
+      - "release/**"
+
+permissions:
+  contents: read
+
+jobs:
+  ci-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run CI Guard
+        env:
+          BASE_REF: origin/main
+        run: |
+          bash scripts/ci/ci_guard.sh
