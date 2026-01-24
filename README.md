@@ -1,10 +1,13 @@
 # Policy Authority
 
-> **Infrastructure for enforcing fixed decision criteria with explicit responsibility.**
-
-> ⚠️ Policy Authority is infrastructure, not a service.  
-> It enforces decisions that were fixed in advance.  
+> Policy Authority is a deterministic, constitution-driven system that fixes what may change — and what must never change.
+>
+> It is infrastructure, not a service.  
+> It enforces decisions fixed in advance.  
 > It does not review, advise, or judge.
+
+📚 **Start here:** See [INDEX.md](./INDEX.md) for the constitutional map and normative documents of Policy Authority v0.1.
+
 
 ---
 
@@ -114,6 +117,9 @@ PyYAML (see requirements.txt)
 
 ## Status
 
+Policy Authority v0.1 is **frozen and in maintenance-only mode**.
+No semantic changes are permitted; only non-semantic maintenance may be applied.
+
 The principles, scope, and constraints of v0.1 are fixed.
 
 Implementation of the evaluation engine and snapshot builder is in progress.
@@ -122,6 +128,8 @@ The following documents are considered **stable and binding**:
 - Product Definition v0.1
 - Infrastructure Requirements v0.1
 - Evaluation Engine Checklist v0.1
+
+This repository publishes v0.1 as a **public reference baseline**, frozen at the tag `v0.1-engine-freeze`.
 
 ---
 
@@ -156,7 +164,7 @@ All constitutional enforcement is centralized in:
 
 scripts/ci/ci_guard.sh
 
-No other CI guard scripts are authoritive.
+No other CI guard scripts are authoritative.
 
 
 ---
