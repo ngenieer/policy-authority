@@ -220,21 +220,24 @@ ENGINE_FILES_CHANGED="$(echo "$CHANGED_FILES" | grep -E '^engine/' || true)"
 if [[ -n "$ENGINE_FILES_CHANGED" ]]; then
   info "Engine changes detected; enforcing boundary rules."
 
+  # Limit scans to changed engine files to avoid false positives in untouched docs
+  readarray -t ENGINE_FILES_ARRAY <<<"$(echo "$ENGINE_FILES_CHANGED")"
+
   if command -v rg >/dev/null 2>&1; then
-    if rg -n --hidden --no-ignore -S '(?:^|[^a-zA-Z0-9_])(frames/|snapshots/)(?:[^a-zA-Z0-9_]|$)' engine; then
+    if rg -n --hidden --no-ignore -S '(?:^|[^a-zA-Z0-9_])(frames/|snapshots/)(?:[^a-zA-Z0-9_]|$)' "${ENGINE_FILES_ARRAY[@]}"; then
       fail "engine/ references frames/ or snapshots/ (reverse dependency forbidden)"
     fi
-    if rg -n --hidden --no-ignore -S '(?:^|[^a-zA-Z0-9_])(authority/)(?:[^a-zA-Z0-9_]|$)' engine; then
+    if rg -n --hidden --no-ignore -S '(?:^|[^a-zA-Z0-9_])(authority/)(?:[^a-zA-Z0-9_]|$)' "${ENGINE_FILES_ARRAY[@]}"; then
       fail "engine/ references authority/ (strict boundary). If you need this, CI should read authority, not engine code."
     fi
   else
     info "rg not found; using grep fallback for boundary enforcement."
-    if grep -RInE '(^|[^a-zA-Z0-9_])(frames/|snapshots/)([^a-zA-Z0-9_]|$)' engine >/dev/null 2>&1; then
-      grep -RInE '(^|[^a-zA-Z0-9_])(frames/|snapshots/)([^a-zA-Z0-9_]|$)' engine || true
+    if grep -RInE '(^|[^a-zA-Z0-9_])(frames/|snapshots/)([^a-zA-Z0-9_]|$)' "${ENGINE_FILES_ARRAY[@]}" >/dev/null 2>&1; then
+      grep -RInE '(^|[^a-zA-Z0-9_])(frames/|snapshots/)([^a-zA-Z0-9_]|$)' "${ENGINE_FILES_ARRAY[@]}" || true
       fail "engine/ references frames/ or snapshots/ (reverse dependency forbidden)"
     fi
-    if grep -RInE '(^|[^a-zA-Z0-9_])(authority/)([^a-zA-Z0-9_]|$)' engine >/dev/null 2>&1; then
-      grep -RInE '(^|[^a-zA-Z0-9_])(authority/)([^a-zA-Z0-9_]|$)' engine || true
+    if grep -RInE '(^|[^a-zA-Z0-9_])(authority/)([^a-zA-Z0-9_]|$)' "${ENGINE_FILES_ARRAY[@]}" >/dev/null 2>&1; then
+      grep -RInE '(^|[^a-zA-Z0-9_])(authority/)([^a-zA-Z0-9_]|$)' "${ENGINE_FILES_ARRAY[@]}" || true
       fail "engine/ references authority/ (strict boundary). If you need this, CI should read authority, not engine code."
     fi
   fi
