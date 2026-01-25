@@ -96,6 +96,9 @@ while IFS=$'\t' read -r status path; do
       if [[ "$path" =~ ^frames/[^/]+/FRAME_CONSTITUTION\.md$ ]] && [ "${status:0:1}" = "A" ]; then
         continue
       fi
+      if [[ "$path" =~ ^frames/[^/]+/authority\.mapping\.yml$ ]] && [ "${status:0:1}" = "A" ]; then
+        continue
+      fi
       fail "unauthorized change under frames/: $status $path"
       ;;
     *)
@@ -228,6 +231,17 @@ if [[ -n "$ENGINE_FILES_CHANGED" ]]; then
       fail "engine/ references authority/ (strict boundary). If you need this, CI should read authority, not engine code."
     fi
   fi
+fi
+
+########################################
+# Authority Spec (Machine-readable) Rules
+########################################
+
+if [ -f "scripts/ci/ci_authority_spec_guard.sh" ]; then
+  info "Running authority spec guard (machine-readable constitution)."
+  bash "scripts/ci/ci_authority_spec_guard.sh"
+else
+  info "Authority spec guard not present; skipping."
 fi
 
 info "All guards passed."

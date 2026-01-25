@@ -1,0 +1,677 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://policy-authority.local/schemas/authority.constitution.v0.1.schema.json",
+  "title": "Authority Constitution v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "status",
+    "identity",
+    "scope",
+    "immutability_and_public_record",
+    "change_as_declared_event",
+    "release_ledger_binding",
+    "non_coercion",
+    "no_outcome_control",
+    "issuer_revocation",
+    "verification_over_trust",
+    "override_boundaries",
+    "public_record_minimum"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "authority.constitution/v0.1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "stable",
+        "frozen"
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_id",
+        "name"
+      ],
+      "properties": {
+        "authority_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 8
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "purpose": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "definition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_company_is",
+        "authority_company_is_not"
+      ],
+      "properties": {
+        "authority_company_is": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "authority_company_is_not": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "may",
+        "may_not"
+      ],
+      "properties": {
+        "may": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "may_not": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "explicit_refusals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "refused_domains",
+        "prohibition"
+      ],
+      "properties": {
+        "refused_domains": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "description",
+              "includes"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "includes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1
+              }
+            }
+          }
+        },
+        "prohibition": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "immutability_and_public_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "published_in_public_repository",
+        "versioned_and_tagged",
+        "permanently_accessible",
+        "past_versions_must_not_be_deleted_or_silently_altered"
+      ],
+      "properties": {
+        "published_in_public_repository": {
+          "type": "boolean"
+        },
+        "versioned_and_tagged": {
+          "type": "boolean"
+        },
+        "permanently_accessible": {
+          "type": "boolean"
+        },
+        "past_versions_must_not_be_deleted_or_silently_altered": {
+          "type": "boolean"
+        }
+      }
+    },
+    "change_as_declared_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changes_must_be_new_version",
+        "change_declaration_required",
+        "change_declaration_must_include",
+        "must_not_invalidate_past_snapshots_or_verdicts",
+        "silent_changes_are_non_official_and_void"
+      ],
+      "properties": {
+        "changes_must_be_new_version": {
+          "type": "boolean"
+        },
+        "change_declaration_required": {
+          "type": "boolean"
+        },
+        "change_declaration_must_include": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "must_not_invalidate_past_snapshots_or_verdicts": {
+          "type": "boolean"
+        },
+        "silent_changes_are_non_official_and_void": {
+          "type": "boolean"
+        }
+      }
+    },
+    "release_ledger_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_ledger_file",
+        "ledger_events_are_binding",
+        "must_not_reinterpret_or_override_declared_meaning_retroactively",
+        "must_not_alter_frozen_semantics_through_policy_process_or_exception",
+        "new_lines_only_via_new_explicit_ledger_entries"
+      ],
+      "properties": {
+        "release_ledger_file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ledger_events_are_binding": {
+          "type": "boolean"
+        },
+        "must_not_reinterpret_or_override_declared_meaning_retroactively": {
+          "type": "boolean"
+        },
+        "must_not_alter_frozen_semantics_through_policy_process_or_exception": {
+          "type": "boolean"
+        },
+        "new_lines_only_via_new_explicit_ledger_entries": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "non_coercion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "use_is_voluntary",
+        "may_recommend_newer_versions",
+        "may_deprecate_older_versions",
+        "may_not_force_migration",
+        "users_retain_full_autonomy_over_version_selection"
+      ],
+      "properties": {
+        "use_is_voluntary": {
+          "type": "boolean"
+        },
+        "may_recommend_newer_versions": {
+          "type": "boolean"
+        },
+        "may_deprecate_older_versions": {
+          "type": "boolean"
+        },
+        "may_not_force_migration": {
+          "type": "boolean"
+        },
+        "users_retain_full_autonomy_over_version_selection": {
+          "type": "boolean"
+        }
+      }
+    },
+    "no_outcome_control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provides_evaluation_mechanisms",
+        "records_evaluation_outcomes",
+        "does_not",
+        "responsibility_for_decisions_remains_with_user_org"
+      ],
+      "properties": {
+        "provides_evaluation_mechanisms": {
+          "type": "boolean"
+        },
+        "records_evaluation_outcomes": {
+          "type": "boolean"
+        },
+        "does_not": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "responsibility_for_decisions_remains_with_user_org": {
+          "type": "boolean"
+        }
+      }
+    },
+    "issuer_revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "revocation_may_occur_if",
+        "revocation_must"
+      ],
+      "properties": {
+        "revocation_may_occur_if": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "revocation_must": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "publicly_recorded",
+            "include_stated_reasons",
+            "not_alter_previously_issued_snapshots"
+          ],
+          "properties": {
+            "publicly_recorded": {
+              "type": "boolean"
+            },
+            "include_stated_reasons": {
+              "type": "boolean"
+            },
+            "not_alter_previously_issued_snapshots": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "verification_over_trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requires_trust_in_authority_company",
+        "provides",
+        "trust_emerges_from_verifiability"
+      ],
+      "properties": {
+        "requires_trust_in_authority_company": {
+          "type": "boolean"
+        },
+        "provides": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "trust_emerges_from_verifiability": {
+          "type": "boolean"
+        }
+      }
+    },
+    "override_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "layered_model",
+        "constitution_layer_non_overridable",
+        "domain_frame_layer",
+        "policy_content_layer",
+        "validation_principle",
+        "summary",
+        "final_note"
+      ],
+      "properties": {
+        "layered_model": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "layer",
+              "overridable",
+              "meaning"
+            ],
+            "properties": {
+              "layer": {
+                "type": "string",
+                "enum": [
+                  "constitution",
+                  "domain_frame",
+                  "policy_content"
+                ]
+              },
+              "overridable": {
+                "type": [
+                  "boolean",
+                  "string"
+                ],
+                "enum": [
+                  false,
+                  true,
+                  "restricted"
+                ]
+              },
+              "meaning": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "constitution_layer_non_overridable": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "responsibility_model",
+            "irreversibility",
+            "transparency_and_record",
+            "non_coercion",
+            "evaluation_engine_constraints_v0_1",
+            "verdict_schema_minimums"
+          ],
+          "properties": {
+            "responsibility_model": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "irreversibility": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "transparency_and_record": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "non_coercion": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "evaluation_engine_constraints_v0_1": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "verdict_schema_minimums": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "required_fields",
+                "required_evidence_fields"
+              ],
+              "properties": {
+                "required_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1
+                },
+                "required_evidence_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        "domain_frame_layer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "allowed_overrides",
+            "forbidden_overrides"
+          ],
+          "properties": {
+            "allowed_overrides": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "forbidden_overrides": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            }
+          }
+        },
+        "policy_content_layer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "allowed_overrides",
+            "recommended_guardrails_non_binding"
+          ],
+          "properties": {
+            "allowed_overrides": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "recommended_guardrails_non_binding": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            }
+          }
+        },
+        "validation_principle": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "overrides_validated_by_layer_conformity_not_content_correctness",
+            "intent_does_not_make_invalid_overrides_valid"
+          ],
+          "properties": {
+            "overrides_validated_by_layer_conformity_not_content_correctness": {
+              "type": "boolean"
+            },
+            "intent_does_not_make_invalid_overrides_valid": {
+              "type": "boolean"
+            }
+          }
+        },
+        "summary": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "final_note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "validation_principle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "overrides_validated_by_layer_conformity_not_content_correctness",
+        "intent_does_not_make_invalid_overrides_valid"
+      ],
+      "properties": {
+        "overrides_validated_by_layer_conformity_not_content_correctness": {
+          "type": "boolean"
+        },
+        "intent_does_not_make_invalid_overrides_valid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "public_record_minimum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "externally_readable",
+        "hashable",
+        "reproducible",
+        "non_retroactive",
+        "attributable",
+        "time_orderable",
+        "context_complete"
+      ],
+      "properties": {
+        "externally_readable": {
+          "type": "boolean"
+        },
+        "hashable": {
+          "type": "boolean"
+        },
+        "reproducible": {
+          "type": "boolean"
+        },
+        "non_retroactive": {
+          "type": "boolean"
+        },
+        "attributable": {
+          "type": "boolean"
+        },
+        "time_orderable": {
+          "type": "boolean"
+        },
+        "context_complete": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "stable",
+              "frozen"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "identity": {
+            "required": [
+              "authority_id"
+            ],
+            "properties": {
+              "authority_id": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

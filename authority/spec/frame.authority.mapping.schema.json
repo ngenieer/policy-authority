@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://policy-authority.local/schemas/frame.authority.mapping.v0.1.schema.json",
+  "title": "Frame \u2192 Authority Mapping v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "frame",
+    "authority",
+    "capability_mapping",
+    "public_record_realization",
+    "prohibition_enforcement",
+    "override_realization"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "frame.authority.mapping/v0.1"
+    },
+    "frame": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_id",
+        "constitution_version"
+      ],
+      "properties": {
+        "authority_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constitution_version": {
+          "type": "string",
+          "const": "authority.constitution/v0.1"
+        }
+      }
+    },
+    "capability_mapping": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "meaning_in_frame"
+        ],
+        "properties": {
+          "meaning_in_frame": {
+            "type": "string",
+            "minLength": 1
+          },
+          "concrete_artifacts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "concrete_actions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "public_record_realization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_unit",
+        "invariants"
+      ],
+      "properties": {
+        "record_unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "invariants": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "hashable",
+            "reproducible",
+            "externally_verifiable"
+          ],
+          "properties": {
+            "hashable": {
+              "type": "boolean"
+            },
+            "reproducible": {
+              "type": "boolean"
+            },
+            "externally_verifiable": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "prohibition_enforcement": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "override_realization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "supported",
+        "layer_conformity_validation"
+      ],
+      "properties": {
+        "supported": {
+          "type": "boolean"
+        },
+        "layer_conformity_validation": {
+          "type": "boolean"
+        },
+        "record_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
