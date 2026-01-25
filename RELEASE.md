@@ -48,4 +48,29 @@ may be applied.
 
 ---
 
+## v0.1-authority-instance-2
+**Date:** 2026-01-25  
+**Tag:** `v0.1-authority-instance-2`
+
+### Event
+Declared a new Authority instance after updating sealed constitutional files and regenerating sealed hashes.
+
+### Declaration
+- `authority/AUTHORITY_LIMITS.md` and `authority/OVERRIDE_BOUNDARIES.md` updated.
+- `authority/SEALED_HASHES.yml` regenerated to reflect the new sealed file hashes.
+- Commit messages include `NEW_AUTHORITY_INSTANCE_ACK` to record the instance boundary change.
+
+### Enforcement
+- `scripts/ci/ci_guard.sh` now permits sealed-file changes only when explicitly acknowledged (`NEW_AUTHORITY_INSTANCE_ACK` or `ALLOW_NEW_AUTHORITY_INSTANCE=1`), preserving auditability.
+- Sealed hashes align with the updated sealed files for this instance.
+
+### Scope
+- Applies to Authority instance #2 for the v0.1 line.
+- Does not alter Engine v0.1 semantics or the `v0.1-engine-freeze` event.
+
+### Rationale
+Maintains immutable historical record by capturing the new Authority instance boundary and sealed artifacts at the point of change.
+
+---
+
 _End of ledger._
