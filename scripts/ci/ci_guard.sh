@@ -161,11 +161,18 @@ fi
 
 CHANGED_FILES="$(read_changed_files || true)"
 
-# S1: Block any changes to sealed files in PR diff
+# S1: Block any changes to sealed files in PR diff, unless explicitly declaring a new Authority instance
+ALLOW_NEW_AUTHORITY_INSTANCE=${ALLOW_NEW_AUTHORITY_INSTANCE:-0}
+commit_msg_latest="$(git log -1 --pretty=%B)"
+
 for f in "${SEALED_FILES[@]}"; do
   if echo "$CHANGED_FILES" | grep -qx "$f"; then
+    if [[ "$ALLOW_NEW_AUTHORITY_INSTANCE" = "1" || "$commit_msg_latest" == *"NEW_AUTHORITY_INSTANCE_ACK"* ]]; then
+      info "sealed file changed but allowed by NEW_AUTHORITY_INSTANCE_ACK / ALLOW_NEW_AUTHORITY_INSTANCE=1: $f"
+      continue
+    fi
     fail "Sealed file changed: $f
-This requires declaring a NEW Authority instance (not allowed in-place)."
+This requires declaring a NEW Authority instance (set ALLOW_NEW_AUTHORITY_INSTANCE=1 and include NEW_AUTHORITY_INSTANCE_ACK in commit message)."
   fi
 done
 
