@@ -83,6 +83,22 @@ Undeclared or silent changes are considered non‑official and void.
 
 ---
 
+## 5.1 Release Ledger Binding
+
+The Authority is explicitly bound by the constitutional events recorded in `RELEASE.md`.
+
+Once a freeze or boundary is recorded in the Release Ledger, the Authority:
+
+- MUST NOT reinterpret or override the declared meaning retroactively.
+- MUST NOT alter frozen semantics through policy, process, or exception.
+- MAY introduce new versions or lines only through new, explicit ledger entries.
+
+In particular, Engine freeze events recorded in the Release Ledger define
+immutable semantic boundaries that the Authority itself cannot bypass.
+
+---
+
+
 ## 6. Non‑Coercion Principle
 
 Use of any Authority Frame version is **voluntary**.

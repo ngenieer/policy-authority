@@ -1,10 +1,13 @@
 # Policy Authority
 
-> **Infrastructure for enforcing fixed decision criteria with explicit responsibility.**
-
-> ⚠️ Policy Authority is infrastructure, not a service.  
-> It enforces decisions that were fixed in advance.  
+> Policy Authority is a deterministic, constitution-driven system that fixes what may change — and what must never change.
+>
+> It is infrastructure, not a service.  
+> It enforces decisions fixed in advance.  
 > It does not review, advise, or judge.
+
+📚 **Start here:** See [INDEX.md](./INDEX.md) for the constitutional map and normative documents of Policy Authority v0.1.
+
 
 ---
 
@@ -114,6 +117,9 @@ PyYAML (see requirements.txt)
 
 ## Status
 
+Policy Authority v0.1 is **frozen and in maintenance-only mode**.
+No semantic changes are permitted; only non-semantic maintenance may be applied.
+
 The principles, scope, and constraints of v0.1 are fixed.
 
 Implementation of the evaluation engine and snapshot builder is in progress.
@@ -122,6 +128,44 @@ The following documents are considered **stable and binding**:
 - Product Definition v0.1
 - Infrastructure Requirements v0.1
 - Evaluation Engine Checklist v0.1
+
+This repository publishes v0.1 as a **public reference baseline**, frozen at the tag `v0.1-engine-freeze`.
+
+---
+
+## CI Guard
+
+Policy Authority enforces its constitutional constraints through a single, unified **CI Guard**.
+
+The CI Guard is a mandatory gate executed in CI and is not an optional developer tool.
+It acts as the sole constitutional enforcer of this repository.
+
+The CI Guard enforces:
+
+- **Engine Freeze**
+  - The semantic meaning of the Engine is frozen.
+  - `engine/ENGINE_FREEZE.md` must exist.
+  - Frozen engine surfaces (e.g. `engine/verdict.schema.json`) must not change.
+
+- **Frame Integrity**
+  - Every frame must contain `FRAME_CONSTITUTION.md`.
+  - Frames are immutable after admission (only new frames may be added).
+
+- **Authority Governance**
+  - Changes under `authority/` require explicit acknowledgment in commit messages.
+  - Sealed Authority files must never change in-place.
+  - Sealed hashes are verified to detect silent tampering.
+
+- **Boundary Enforcement**
+  - The Engine must not depend on `frames/`, `snapshots/`, or `authority/`.
+
+
+All constitutional enforcement is centralized in: 
+
+scripts/ci/ci_guard.sh
+
+No other CI guard scripts are authoritative.
+
 
 ---
 

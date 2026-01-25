@@ -1,0 +1,183 @@
+version: "authority.constitution/v0.1"
+status: "draft" # draft | stable | frozen
+
+identity:
+  authority_id: null # required when status != draft
+  name: "Policy Authority — Authority Company"
+
+purpose:
+  statement: >
+    Self-binding limits: authority is not discretion, expertise, or moral judgment,
+    but procedural restraint, public record, and user choice.
+
+definition:
+  authority_company_is:
+    - "Defines and maintains the Authority Frame"
+    - "Publishes official Policy Snapshots"
+    - "Maintains Evaluation Engine specifications"
+    - "Records and publishes frame and snapshot changes"
+  authority_company_is_not:
+    - "Organizations that merely use this system"
+
+scope:
+  may:
+    - "Define the structure (schema) of the Authority Frame"
+    - "Publish new versions of the Authority Frame"
+    - "Publish official Policy Snapshots"
+    - "Approve or revoke Issuer status"
+  may_not:
+    - "Determine whether a user decision is correct or incorrect"
+    - "Enforce how users act on PASS or FAIL outcomes"
+    - "Retroactively alter past evaluations"
+    - "Modify a Policy Snapshot without public record"
+
+explicit_refusals:
+  refused_domains:
+    - id: "WEB_FACING_RUNTIME_SEMANTICS"
+      description: >
+        Domains whose policy meaning depends on runtime interaction or request-time semantics.
+      includes:
+        - "Web-facing infrastructure (routing, headers, CDN, edge, request-level configuration)"
+  prohibition:
+    - "No Authority Frame or Policy Snapshot may claim coverage over refused domains."
+
+immutability_and_public_record:
+  published_in_public_repository: true
+  versioned_and_tagged: true
+  permanently_accessible: true
+  past_versions_must_not_be_deleted_or_silently_altered: true
+
+change_as_declared_event:
+  changes_must_be_new_version: true
+  change_declaration_required: true
+  change_declaration_must_include:
+    - "scope"
+    - "motivation"
+    - "impact"
+  must_not_invalidate_past_snapshots_or_verdicts: true
+  silent_changes_are_non_official_and_void: true
+
+release_ledger_binding:
+  release_ledger_file: "RELEASE.md"
+  ledger_events_are_binding: true
+  must_not_reinterpret_or_override_declared_meaning_retroactively: true
+  must_not_alter_frozen_semantics_through_policy_process_or_exception: true
+  new_lines_only_via_new_explicit_ledger_entries: true
+  note: "Engine freeze events recorded in the Release Ledger define immutable semantic boundaries."
+
+non_coercion:
+  use_is_voluntary: true
+  may_recommend_newer_versions: true
+  may_deprecate_older_versions: true
+  may_not_force_migration: true
+  users_retain_full_autonomy_over_version_selection: true
+
+no_outcome_control:
+  provides_evaluation_mechanisms: true
+  records_evaluation_outcomes: true
+  does_not:
+    - "Mandate operational decisions"
+    - "Override human or organizational judgment"
+    - "Assume responsibility for outcomes"
+  responsibility_for_decisions_remains_with_user_org: true
+
+issuer_revocation:
+  revocation_may_occur_if:
+    - "Issuer violates declared issuance procedures"
+    - "Issuer falsifies records or attribution"
+  revocation_must:
+    publicly_recorded: true
+    include_stated_reasons: true
+    not_alter_previously_issued_snapshots: true
+
+verification_over_trust:
+  requires_trust_in_authority_company: false
+  provides:
+    - "Publicly inspectable rules"
+    - "Reproducible evaluation mechanisms"
+    - "Immutable historical records"
+  trust_emerges_from_verifiability: true
+
+override_boundaries:
+  layered_model:
+    - layer: "constitution"
+      overridable: false
+      meaning: "Absolute, non-overridable. Changing any constitutes a different system."
+    - layer: "domain_frame"
+      overridable: "restricted"
+      meaning: "Scope/value overrides only."
+    - layer: "policy_content"
+      overridable: true
+      meaning: "Content overrides allowed."
+
+  constitution_layer_non_overridable:
+    responsibility_model:
+      - "Authority Company does not decide outcomes"
+      - "Authority Company does not enforce operational actions"
+      - "Responsibility for snapshot content and outcomes rests with the Issuer"
+    irreversibility:
+      - "Past snapshots and verdicts MUST NOT be altered or deleted"
+      - "Retroactive modification is forbidden"
+    transparency_and_record:
+      - "All official frames and snapshots must be versioned"
+      - "Silent changes are forbidden"
+      - "Change declarations are mandatory"
+    non_coercion:
+      - "Users retain version selection rights"
+      - "Forced migration is forbidden"
+    evaluation_engine_constraints_v0_1:
+      - "No external API calls"
+      - "No network access"
+      - "No semantic inference or intent deduction"
+      - "FAIL verdicts MUST NOT be downgraded"
+    verdict_schema_minimums:
+      required_fields:
+        - "rule_id"
+        - "rule_type"
+        - "file"
+        - "reason"
+      required_evidence_fields:
+        - "evidence.pattern"
+
+  domain_frame_layer:
+    allowed_overrides:
+      - "Target file types and roots"
+      - "Evaluation scope (full scan vs deterministic diff-based scan)"
+      - "Evidence verbosity"
+      - "Rule bundle composition"
+    forbidden_overrides:
+      - "Matching model change (substring → AST/semantic/LLM)"
+      - "Verdict semantics changes (FAIL vs WARN vs PASS)"
+      - "Rule priority order changes (e.g., boundaries before invariants)"
+      - "Evidence minimum requirements changes"
+
+  policy_content_layer:
+    allowed_overrides:
+      - "Rule definitions and counts"
+      - "File glob patterns within rules"
+      - "Forbidden or required-absent pattern strings"
+      - "Domain-specific rule bundles"
+    recommended_guardrails_non_binding:
+      - "Avoid overly broad file globs (e.g., **/*)"
+      - "Avoid overly generic patterns that cause excessive false positives"
+      - "Document rationale for strict rules"
+
+  validation_principle:
+    overrides_validated_by_layer_conformity_not_content_correctness: true
+    intent_does_not_make_invalid_overrides_valid: true
+
+  summary:
+    - "Authority Frame: no overrides"
+    - "Snapshot Frame: scope and configuration only"
+    - "Policy Content: rules are issuer-defined"
+  final_note: >
+    Any snapshot or frame that violates these boundaries is non-authoritative by definition.
+
+public_record_minimum:
+  externally_readable: true
+  hashable: true
+  reproducible: true
+  non_retroactive: true
+  attributable: true
+  time_orderable: true
+  context_complete: true

@@ -23,6 +23,11 @@ Any override outside its permitted layer is invalid by definition.
 The following elements MUST NOT be overridden under any circumstances.
 Changing any of these constitutes a different system.
 
+The non-overridable elements in this section derive from
+the Authority self-binding constraints defined in `AUTHORITY_LIMITS.md`
+and the irreversible events recorded in `RELEASE.md`.
+
+
 ### 2.1 Responsibility Model
 
 - Authority Company does not decide outcomes
