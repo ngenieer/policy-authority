@@ -63,6 +63,8 @@ The following are prohibited in Engine v0.1:
 - Emitting additional fields not defined in the v0.1 verdict schema as normative output
 - Reinterpreting historical verdicts by changing input identity semantics
 
+**The boundary and invariant rule structure defined in v0.1 is intentionally minimal and SHALL NOT be expanded to express semantic, executable, or domain-aware logic in any future version of this engine.**
+
 If any prohibited change is desired, it MUST be introduced as a **new Engine line** (e.g., v0.2 or v1),
 without invalidating or reinterpreting v0.1 verdicts.
 
