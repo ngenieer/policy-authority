@@ -110,6 +110,13 @@ Lower layers MUST NOT contradict upper layers.
 
 ---
 
+### Tutorial
+
+- **Your First Recorded Failure** — A minimal walkthrough that intentionally produces a FAIL to demonstrate what Policy Authority records and what it refuses to interpret.  
+  See: `docs/tutorial/FIRST_FAILURE.md`
+
+---
+
 ### Dependency
 PyYAML (see requirements.txt)
 
