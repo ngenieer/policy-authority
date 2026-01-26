@@ -91,6 +91,8 @@ fi
 # F2: only allowed change under frames/*/ is adding FRAME_CONSTITUTION.md
 # Exception: explicit FRAME_UPDATE_ACK(<frame-name>) in the latest commit message allows editing that frame's constitution
 commit_msg_latest="$(git log -1 --pretty=%B)"
+# All commit messages in the diff range (for ACK lookup)
+commit_msgs_range="$(git log --pretty=%B "${BASE_REF}...HEAD" 2>/dev/null || git log --pretty=%B HEAD)"
 while IFS=$'\t' read -r status path; do
   [ -z "${path:-}" ] && continue
   case "$path" in
@@ -108,11 +110,11 @@ while IFS=$'\t' read -r status path; do
         frame_name="${BASH_REMATCH[1]}"
         ack_token_exact="FRAME_UPDATE_ACK(${frame_name})"
         # allow also hyphenated form e.g., FRAME_UPDATE_ACK(terraform-v0.1)
-        if [[ "$commit_msg_latest" == *"$ack_token_exact"* ]]; then
+        if [[ "$commit_msg_latest" == *"$ack_token_exact"* || "$commit_msgs_range" == *"$ack_token_exact"* ]]; then
           info "frame constitution edit allowed by $ack_token_exact"
           continue
         fi
-        if [[ "$commit_msg_latest" =~ FRAME_UPDATE_ACK\(${frame_name}-v[0-9]+\.[0-9]+\) ]]; then
+        if [[ "$commit_msg_latest" =~ FRAME_UPDATE_ACK\(${frame_name}-v[0-9]+\.[0-9]+\) || "$commit_msgs_range" =~ FRAME_UPDATE_ACK\(${frame_name}-v[0-9]+\.[0-9]+\) ]]; then
           info "frame constitution edit allowed by versioned ACK token"
           continue
         fi
