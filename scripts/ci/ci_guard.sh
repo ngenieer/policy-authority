@@ -89,15 +89,28 @@ if [ "$missing" -ne 0 ]; then
 fi
 
 # F2: only allowed change under frames/*/ is adding FRAME_CONSTITUTION.md
+# Exception: explicit FRAME_UPDATE_ACK(<frame-name>) in the latest commit message allows editing that frame's constitution
+commit_msg_latest="$(git log -1 --pretty=%B)"
 while IFS=$'\t' read -r status path; do
   [ -z "${path:-}" ] && continue
   case "$path" in
     frames/*)
+      # Allow add of FRAME_CONSTITUTION.md
       if [[ "$path" =~ ^frames/[^/]+/FRAME_CONSTITUTION\.md$ ]] && [ "${status:0:1}" = "A" ]; then
         continue
       fi
+      # Allow add of authority.mapping.yml
       if [[ "$path" =~ ^frames/[^/]+/authority\.mapping\.yml$ ]] && [ "${status:0:1}" = "A" ]; then
         continue
+      fi
+      # Allow targeted edits to an existing FRAME_CONSTITUTION.md only when an ACK is present
+      if [[ "$path" =~ ^frames/([^/]+)/FRAME_CONSTITUTION\.md$ ]] && [ "${status:0:1}" = "M" ]; then
+        frame_name="${BASH_REMATCH[1]}"
+        ack_token="FRAME_UPDATE_ACK(${frame_name})"
+        if [[ "$commit_msg_latest" == *"$ack_token"* ]]; then
+          info "frame constitution edit allowed by $ack_token"
+          continue
+        fi
       fi
       fail "unauthorized change under frames/: $status $path"
       ;;
