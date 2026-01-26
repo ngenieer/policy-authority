@@ -106,9 +106,14 @@ while IFS=$'\t' read -r status path; do
       # Allow targeted edits to an existing FRAME_CONSTITUTION.md only when an ACK is present
       if [[ "$path" =~ ^frames/([^/]+)/FRAME_CONSTITUTION\.md$ ]] && [ "${status:0:1}" = "M" ]; then
         frame_name="${BASH_REMATCH[1]}"
-        ack_token="FRAME_UPDATE_ACK(${frame_name})"
-        if [[ "$commit_msg_latest" == *"$ack_token"* ]]; then
-          info "frame constitution edit allowed by $ack_token"
+        ack_token_exact="FRAME_UPDATE_ACK(${frame_name})"
+        # allow also hyphenated form e.g., FRAME_UPDATE_ACK(terraform-v0.1)
+        if [[ "$commit_msg_latest" == *"$ack_token_exact"* ]]; then
+          info "frame constitution edit allowed by $ack_token_exact"
+          continue
+        fi
+        if [[ "$commit_msg_latest" =~ FRAME_UPDATE_ACK\(${frame_name}-v[0-9]+\.[0-9]+\) ]]; then
+          info "frame constitution edit allowed by versioned ACK token"
           continue
         fi
       fi
