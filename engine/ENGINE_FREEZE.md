@@ -71,6 +71,7 @@ without invalidating or reinterpreting v0.1 verdicts.
 - Frames define how domain snapshots are shaped and which invariants apply.
 - The Engine remains domain-agnostic and only enforces admissibility and invariant violations.
 - Authority may admit new Frames, but Authority cannot override the Engine’s frozen meaning.
+- Frame Author contract: FRAME_AUTHOR_INTERFACE.md
 
 ## 5. Compliance Requirement
 
