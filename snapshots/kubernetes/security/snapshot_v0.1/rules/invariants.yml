@@ -1,0 +1,47 @@
+# Invariants — Kubernetes Security sub-frame (v0.1)
+
+rules:
+  - id: K8S-SEC-INV-001
+    title: "Containers must not run as root"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      required_absent:
+        - "runAsUser: 0"
+        - "runAsNonRoot: false"
+
+  - id: K8S-SEC-INV-002
+    title: "Default service account must not be used"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      required_absent:
+        - "serviceAccountName: default"
+
+  - id: K8S-SEC-INV-003
+    title: "Images must not use :latest tag"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - ":latest"
+
+  - id: K8S-SEC-INV-004
+    title: "Image pull policy must not be Never"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      required_absent:
+        - "imagePullPolicy: Never"

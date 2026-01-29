@@ -1,0 +1,35 @@
+# Boundaries — Kubernetes Security sub-frame (v0.1)
+
+rules:
+  - id: K8S-SEC-BOUNDARY-001
+    title: "No privileged containers"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - "privileged: true"
+
+  - id: K8S-SEC-BOUNDARY-002
+    title: "No hostNetwork pods"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - "hostNetwork: true"
+
+  - id: K8S-SEC-BOUNDARY-003
+    title: "No hostPath mounts"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - "hostPath:"

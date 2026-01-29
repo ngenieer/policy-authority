@@ -1,0 +1,54 @@
+# Invariants — Kubernetes Network sub-frame (v0.1)
+
+rules:
+  - id: K8S-NET-INV-001
+    title: "Services should be internal by default"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*service*.yaml"
+        - "**/*service*.yml"
+      required_absent:
+        - "type: LoadBalancer"
+        - "type: NodePort"
+
+  - id: K8S-NET-INV-002
+    title: "Ingress must specify host"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*ingress*.yaml"
+        - "**/*ingress*.yml"
+      forbidden_patterns:
+        - "host: \"\""
+        - "host: ''"
+      required_present:
+        - "host:"
+
+  - id: K8S-NET-INV-003
+    title: "NetworkPolicy must default to deny all ingress"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*networkpolicy*.yaml"
+        - "**/*networkpolicy*.yml"
+      required_present:
+        - "policyTypes:"
+        - "- Ingress"
+      required_absent:
+        - "ingress: []"
+
+  - id: K8S-NET-INV-004
+    title: "NetworkPolicy must specify pod selector"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*networkpolicy*.yaml"
+        - "**/*networkpolicy*.yml"
+      required_present:
+        - "podSelector:"
+        - "matchLabels:"

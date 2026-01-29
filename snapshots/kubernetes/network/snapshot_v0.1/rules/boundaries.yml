@@ -1,0 +1,24 @@
+# Boundaries — Kubernetes Network sub-frame (v0.1)
+
+rules:
+  - id: K8S-NET-BOUNDARY-001
+    title: "No hostNetwork pods"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - "hostNetwork: true"
+
+  - id: K8S-NET-BOUNDARY-002
+    title: "No hostPort exposure"
+    enforcement:
+      mode: fail
+    match:
+      files:
+        - "**/*.yaml"
+        - "**/*.yml"
+      forbidden_patterns:
+        - "hostPort:"
