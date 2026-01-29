@@ -1,0 +1,24 @@
+# Boundaries — Agent API Surface sub-frame (v0.1)
+
+boundaries:
+  - id: AGENT-API-BOUNDARY-001
+    description: Disallow new FastAPI application exposure.
+    match:
+      files:
+        - "**/*.py"
+        - "**/*.ts"
+        - "**/*.js"
+        - "**/*.java"
+      contains:
+        - "FastAPI("
+
+  - id: AGENT-API-BOUNDARY-002
+    description: Disallow generic OpenAPI publication markers.
+    match:
+      files:
+        - "**/*.py"
+        - "**/*.ts"
+        - "**/*.js"
+        - "**/*.java"
+      contains:
+        - "openapi"

@@ -1,0 +1,26 @@
+# Boundaries — Agent File Scope sub-frame (v0.1)
+
+boundaries:
+  - id: AGENT-FILE-BOUNDARY-001
+    description: Disallow references to authority files.
+    match:
+      files:
+        - "**/*"
+      contains:
+        - "authority/"
+
+  - id: AGENT-FILE-BOUNDARY-002
+    description: Disallow references to engine files.
+    match:
+      files:
+        - "**/*"
+      contains:
+        - "engine/"
+
+  - id: AGENT-FILE-BOUNDARY-003
+    description: Disallow references to CI guard scripts.
+    match:
+      files:
+        - "**/*"
+      contains:
+        - "scripts/ci/"

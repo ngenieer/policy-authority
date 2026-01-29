@@ -1,0 +1,20 @@
+snapshot_id: agent/file_scope/snapshot_v0.1
+domain: agent/file_scope
+version: v0.1
+frame: frames/agent/file_scope/SNAPSHOT_FRAME.md
+issuer: Authority Company (agent file-scope scaffold)
+
+evaluation:
+  order:
+    - boundaries
+    - invariants
+    - deprecated
+  short_circuit: true
+
+rules:
+  boundaries: rules/boundaries.yml
+  invariants: rules/invariants.yml
+  deprecated: rules/deprecated.yml
+
+sources:
+  - sources/README.md

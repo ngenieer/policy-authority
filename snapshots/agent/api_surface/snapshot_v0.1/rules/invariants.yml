@@ -1,0 +1,39 @@
+# Invariants — Agent API Surface sub-frame (v0.1)
+
+invariants:
+  - id: AGENT-API-INV-001
+    description: Disallow HTTP GET route decorators.
+    match:
+      files:
+        - "**/*.py"
+        - "**/*.ts"
+        - "**/*.js"
+      contains:
+        - "@app.get("
+
+  - id: AGENT-API-INV-002
+    description: Disallow HTTP POST route decorators.
+    match:
+      files:
+        - "**/*.py"
+        - "**/*.ts"
+        - "**/*.js"
+      contains:
+        - "@app.post("
+
+  - id: AGENT-API-INV-003
+    description: Disallow public class exports in Java sources.
+    match:
+      files:
+        - "**/*.java"
+      contains:
+        - "public class"
+
+  - id: AGENT-API-INV-004
+    description: Disallow default exports in JS/TS modules.
+    match:
+      files:
+        - "**/*.ts"
+        - "**/*.js"
+      contains:
+        - "export default"

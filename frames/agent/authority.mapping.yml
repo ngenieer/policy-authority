@@ -1,0 +1,30 @@
+version: "frame.authority.mapping/v0.1"
+frame: "agent"
+
+authority:
+  authority_id: null
+  constitution_version: "authority.constitution/v0.1"
+
+capability_mapping:
+  ISSUE_SNAPSHOT:
+    meaning_in_frame: "Issue an Agent snapshot as defined by SNAPSHOT_FRAME.md"
+    concrete_artifacts:
+      - "SNAPSHOT_FRAME.md"
+      - "FRAME_CONSTITUTION.md"
+
+public_record_realization:
+  record_unit: "git_commit"
+  invariants:
+    hashable: true
+    reproducible: true
+    externally_verifiable: true
+
+prohibition_enforcement:
+  NO_ENGINE_SEMANTICS_CHANGE: "enforced by engine freeze + CI guard"
+  NO_PRIVATE_OFFICIAL_RECORDS: "enforced by public repository requirement"
+  NO_RETROACTIVE_MODIFICATION: "enforced by append-only records + tags"
+
+override_realization:
+  supported: true
+  layer_conformity_validation: true
+  record_path: "authority/OVERRIDE_RECORDS/"

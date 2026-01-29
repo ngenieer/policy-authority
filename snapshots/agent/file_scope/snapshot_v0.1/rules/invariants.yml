@@ -1,0 +1,26 @@
+# Invariants — Agent File Scope sub-frame (v0.1)
+
+invariants:
+  - id: AGENT-FILE-INV-001
+    description: Disallow modifications referencing snapshots directory.
+    match:
+      files:
+        - "**/*"
+      contains:
+        - "snapshots/"
+
+  - id: AGENT-FILE-INV-002
+    description: Disallow modifications referencing authority seals.
+    match:
+      files:
+        - "**/*"
+      contains:
+        - "SEALED_"
+
+  - id: AGENT-FILE-INV-003
+    description: Disallow modifications referencing release metadata.
+    match:
+      files:
+        - "**/*"
+      contains:
+        - "RELEASE.md"
