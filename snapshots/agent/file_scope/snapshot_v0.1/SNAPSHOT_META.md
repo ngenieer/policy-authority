@@ -27,6 +27,18 @@ Provides FAIL-only detection when agent artifacts indicate modifications outside
 - Runtime or environment effects
 - Semantic interpretation beyond substring/glob matches
 
+## Regression Fixtures
+- Run: `bin/policy-authority verify --snapshot snapshots/agent/file_scope/snapshot_v0.1 --repo snapshots/agent/file_scope/snapshot_v0.1/sources/fixtures/pass`  
+  Expected: PASS
+- Run: `bin/policy-authority verify --snapshot snapshots/agent/file_scope/snapshot_v0.1 --repo snapshots/agent/file_scope/snapshot_v0.1/sources/fixtures/fail/case-001-boundary-001`  
+  Expected: FAIL (AGENT-FILE-BOUNDARY-001)
+- Run: `bin/policy-authority verify --snapshot snapshots/agent/file_scope/snapshot_v0.1 --repo snapshots/agent/file_scope/snapshot_v0.1/sources/fixtures/fail/case-002-boundary-002`  
+  Expected: FAIL (AGENT-FILE-BOUNDARY-002)
+- Run: `bin/policy-authority verify --snapshot snapshots/agent/file_scope/snapshot_v0.1 --repo snapshots/agent/file_scope/snapshot_v0.1/sources/fixtures/fail/case-003-invariant-001`  
+  Expected: FAIL (AGENT-FILE-INV-001)
+
+Note: FAIL fixtures embed explicit marker strings (e.g., `OUT_OF_SCOPE_PATH: authority/`) solely to trigger substring-based rules; they symbolize out-of-scope paths and do not assert meaning about actual repository directories.
+
 ## Enforcement
 - mode: FAIL_ONLY
 - evaluation_order: defined by `policy_index.yml` (`evaluation.order`)
