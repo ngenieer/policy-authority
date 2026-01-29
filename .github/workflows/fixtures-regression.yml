@@ -1,0 +1,42 @@
+name: Fixtures Regression
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Kubernetes security PASS
+        run: bin/policy-authority --snapshot snapshots/kubernetes/security/snapshot_v0.1 --target snapshots/kubernetes/security/snapshot_v0.1/sources/fixtures/pass eval
+
+      - name: Kubernetes security FAIL (privileged)
+        run: |
+          ! bin/policy-authority --snapshot snapshots/kubernetes/security/snapshot_v0.1 --target snapshots/kubernetes/security/snapshot_v0.1/sources/fixtures/fail/case-001-privileged eval
+
+      - name: Kubernetes network FAIL (loadbalancer)
+        run: |
+          ! bin/policy-authority --snapshot snapshots/kubernetes/network/snapshot_v0.1 --target snapshots/kubernetes/network/snapshot_v0.1/sources/fixtures/fail/case-002-loadbalancer eval
+
+      - name: Kubernetes root FAIL (imagePullPolicy Never)
+        run: |
+          ! bin/policy-authority --snapshot snapshots/kubernetes/snapshot_v0.1 --target snapshots/kubernetes/snapshot_v0.1/sources/fixtures/fail/case-003-imagepull-never eval
+
+      - name: Terraform PASS
+        run: bin/policy-authority --snapshot snapshots/terraform/snapshot_v0.1 --target snapshots/terraform/snapshot_v0.1/sources/fixtures/pass eval
+
+      - name: Terraform FAIL (public ingress)
+        run: |
+          ! bin/policy-authority --snapshot snapshots/terraform/snapshot_v0.1 --target snapshots/terraform/snapshot_v0.1/sources/fixtures/fail/case-001-public-ingress eval

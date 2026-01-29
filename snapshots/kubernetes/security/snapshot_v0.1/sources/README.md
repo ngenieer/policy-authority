@@ -1,7 +1,7 @@
-# Sources — Kubernetes Security snapshot_v0.1
-
-Fixtures:
-- fixtures/pass/: Pod without privileged, hostNetwork, hostPath, root, default SA, or disallowed image settings (expected PASS).
-- fixtures/fail/case-001-privileged/: Pod with `privileged: true` to trigger K8S-SEC-BOUNDARY-001 (expected FAIL).
-- fixtures/fail/case-002-hostnetwork/: Pod with `hostNetwork: true` to trigger K8S-SEC-BOUNDARY-002 (expected FAIL).
-- fixtures/fail/case-003-run-as-root/: Pod with `runAsUser: 0` to trigger K8S-SEC-INV-001 (expected FAIL).
+# Sources
+- Purpose: Minimal fixtures to prove PASS/FAIL behavior of kubernetes/security snapshot v0.1 via glob+substring rules.
+- Fixtures:
+  - pass/ : Pod without privileged, hostNetwork, hostPath, root, default SA, or disallowed image settings (expected PASS)
+  - fail/case-001-privileged/ : triggers K8S-SEC-BOUNDARY-001 (substring: "privileged: true") (expected FAIL)
+  - fail/case-002-hostnetwork/ : triggers K8S-SEC-BOUNDARY-002 (substring: "hostNetwork: true") (expected FAIL)
+  - fail/case-003-run-as-root/ : triggers K8S-SEC-INV-001 (substring: "runAsUser: 0") (expected FAIL)
