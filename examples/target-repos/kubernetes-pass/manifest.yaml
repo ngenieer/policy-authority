@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-pass
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-pass
+  template:
+    metadata:
+      labels:
+        app: demo-pass
+    spec:
+      serviceAccountName: demo-sa
+      containers:
+        - name: app
+          image: ghcr.io/example/app:1.0.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false

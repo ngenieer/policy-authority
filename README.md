@@ -115,6 +115,14 @@ Lower layers MUST NOT contradict upper layers.
 - **Your First Recorded Failure** — A minimal walkthrough that intentionally produces a FAIL to demonstrate what Policy Authority records and what it refuses to interpret.  
   See: `docs/tutorial/FIRST_FAILURE.md`
 
+## v0.1 Starter Pack
+- frames/kubernetes/security
+- snapshots/kubernetes/security/snapshot_v0.1
+- frames/kubernetes/network
+- snapshots/kubernetes/network/snapshot_v0.1
+- frames/terraform
+- snapshots/terraform/snapshot_v0.1
+
 ---
 
 ### Dependency

@@ -1,0 +1,28 @@
+{
+  "spec_version": "v0.1",
+  "verdict": "FAIL",
+  "snapshot": {
+    "id": "kubernetes/security/snapshot_v0.1",
+    "hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "target": {
+    "ref": "examples/target-repos/kubernetes-fail"
+  },
+  "violations": [
+    {
+      "rule": "K8S-SEC-BOUNDARY-002",
+      "file": "manifest.yaml",
+      "evidence": "hostNetwork: true"
+    },
+    {
+      "rule": "K8S-SEC-INV-003",
+      "file": "manifest.yaml",
+      "evidence": "image: ghcr.io/example/app:latest"
+    },
+    {
+      "rule": "K8S-SEC-INV-001",
+      "file": "manifest.yaml",
+      "evidence": "runAsNonRoot: false"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "spec_version": "v0.1",
+  "verdict": "PASS",
+  "snapshot": {
+    "id": "kubernetes/security/snapshot_v0.1",
+    "hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "target": {
+    "ref": "examples/target-repos/kubernetes-pass"
+  },
+  "violations": []
+}
