@@ -35,3 +35,13 @@ Establishes a minimal, deterministic security-focused snapshot for Kubernetes ma
 - mode: FAIL_ONLY
 - evaluation_order: defined by `policy_index.yml` (`evaluation.order`)
 - short_circuit: true (first violation halts evaluation)
+
+## Regression Fixtures
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/security/snapshot_v0.1 --repo snapshots/kubernetes/security/snapshot_v0.1/sources/fixtures/pass`  
+  Expected: PASS
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/security/snapshot_v0.1 --repo snapshots/kubernetes/security/snapshot_v0.1/sources/fixtures/fail/case-001-privileged`  
+  Expected: FAIL — Rule: K8S-SEC-BOUNDARY-001; Files: `**/*.yaml`, `**/*.yml`; Substring: `privileged: true`
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/security/snapshot_v0.1 --repo snapshots/kubernetes/security/snapshot_v0.1/sources/fixtures/fail/case-002-hostnetwork`  
+  Expected: FAIL — Rule: K8S-SEC-BOUNDARY-002; Files: `**/*.yaml`, `**/*.yml`; Substring: `hostNetwork: true`
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/security/snapshot_v0.1 --repo snapshots/kubernetes/security/snapshot_v0.1/sources/fixtures/fail/case-003-run-as-root`  
+  Expected: FAIL — Rule: K8S-SEC-INV-001; Files: `**/*.yaml`, `**/*.yml`; Substring: `runAsUser: 0`

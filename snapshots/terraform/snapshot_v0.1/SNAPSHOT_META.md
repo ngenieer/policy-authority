@@ -55,3 +55,13 @@ Deprecated rules are retained for **historical and audit continuity only**.
 ## Scope Note
 
 This snapshot is intentionally minimal and infrastructure-only, aligned with the v0.1 product boundary.
+
+## Regression Fixtures
+- Run: `bin/policy-authority verify --snapshot snapshots/terraform/snapshot_v0.1 --repo snapshots/terraform/snapshot_v0.1/sources/fixtures/pass`  
+  Expected: PASS
+- Run: `bin/policy-authority verify --snapshot snapshots/terraform/snapshot_v0.1 --repo snapshots/terraform/snapshot_v0.1/sources/fixtures/fail/case-001-public-ingress`  
+  Expected: FAIL — Rule: no_public_ingress; Files: `**/*.tf`; Substring: `0.0.0.0/0`
+- Run: `bin/policy-authority verify --snapshot snapshots/terraform/snapshot_v0.1 --repo snapshots/terraform/snapshot_v0.1/sources/fixtures/fail/case-002-wildcard-iam`  
+  Expected: FAIL — Rule: no_wildcard_iam; Files: `**/*.tf`; Substring: `*`
+- Run: `bin/policy-authority verify --snapshot snapshots/terraform/snapshot_v0.1 --repo snapshots/terraform/snapshot_v0.1/sources/fixtures/fail/case-003-encryption-disabled`  
+  Expected: FAIL — Rules: require_encryption_at_rest, encryption_must_not_be_disabled (both share the same match); Files: `**/*.tf`; Substring: `encrypted = false`

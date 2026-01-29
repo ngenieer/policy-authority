@@ -35,3 +35,13 @@ Establishes a minimal, deterministic network-focused snapshot for Kubernetes man
 - mode: FAIL_ONLY
 - evaluation_order: defined by `policy_index.yml` (`evaluation.order`)
 - short_circuit: true (first violation halts evaluation)
+
+## Regression Fixtures
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/network/snapshot_v0.1 --repo snapshots/kubernetes/network/snapshot_v0.1/sources/fixtures/pass`  
+  Expected: PASS
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/network/snapshot_v0.1 --repo snapshots/kubernetes/network/snapshot_v0.1/sources/fixtures/fail/case-001-hostnetwork`  
+  Expected: FAIL — Rule: K8S-NET-BOUNDARY-001; Files: `**/*.yaml`, `**/*.yml`; Substring: `hostNetwork: true`
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/network/snapshot_v0.1 --repo snapshots/kubernetes/network/snapshot_v0.1/sources/fixtures/fail/case-002-loadbalancer`  
+  Expected: FAIL — Rule: K8S-NET-INV-001; Files: `**/*service*.yaml`, `**/*service*.yml`; Substrings: `type: LoadBalancer`
+- Run: `bin/policy-authority verify --snapshot snapshots/kubernetes/network/snapshot_v0.1 --repo snapshots/kubernetes/network/snapshot_v0.1/sources/fixtures/fail/case-003-ingress-empty-host`  
+  Expected: FAIL — Rule: K8S-NET-INV-002; Files: `**/*ingress*.yaml`, `**/*ingress*.yml`; Substring: `host: ""`

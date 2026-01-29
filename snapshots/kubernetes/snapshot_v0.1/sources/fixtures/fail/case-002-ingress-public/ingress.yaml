@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kube-public
+spec:
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80
+  # Explicit wildcard source to trigger boundary rule
+  whitelist: "0.0.0.0/0"
+  ingressClassName: public
+  defaultBackend:
+    service:
+      name: web
+      port:
+        number: 80
