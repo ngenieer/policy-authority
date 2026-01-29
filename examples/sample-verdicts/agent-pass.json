@@ -1,0 +1,12 @@
+{
+  "spec_version": "v0.1",
+  "verdict": "PASS",
+  "snapshot": {
+    "id": "agent/file_scope/snapshot_v0.1",
+    "hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+  },
+  "target": {
+    "ref": "examples/target-repos/agent-pass"
+  },
+  "violations": []
+}

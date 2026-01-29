@@ -1,0 +1,23 @@
+{
+  "spec_version": "v0.1",
+  "verdict": "FAIL",
+  "snapshot": {
+    "id": "agent/api_surface/snapshot_v0.1",
+    "hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "target": {
+    "ref": "examples/target-repos/agent-fail-api-surface"
+  },
+  "violations": [
+    {
+      "rule": "AGENT-API-BOUNDARY-001",
+      "file": "src/app.py",
+      "evidence": "FastAPI("
+    },
+    {
+      "rule": "AGENT-API-INV-001",
+      "file": "src/app.py",
+      "evidence": "@app.get(\"/\")"
+    }
+  ]
+}
