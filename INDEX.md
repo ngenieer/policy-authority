@@ -1,3 +1,7 @@
+> ⚠️ This file is **non-normative**.  
+> It lists reference frames and snapshots provided as a v0.1 starter pack for evaluation and regression purposes.
+
+
 ## v0.1 Starter Pack
 - frames/kubernetes/security
 - snapshots/kubernetes/security/snapshot_v0.1

@@ -6,8 +6,13 @@
 > It enforces decisions fixed in advance.  
 > It does not review, advise, or judge.
 
-📚 **Start here:** See [INDEX.md](./INDEX.md) for the constitutional map and normative documents of Policy Authority v0.1.
+📚 Start here:
 
+- **Normative definitions (v0.1)**  
+  See `Product_Definition_v0.1.md` and `Infrastructure_Requirements_v0.1.md`.
+
+- **Reference starter pack (non-normative)**  
+  See `INDEX.md` for example frames and snapshots used for evaluation and regression.
 
 ---
 
